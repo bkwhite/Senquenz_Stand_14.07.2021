@@ -10,8 +10,6 @@ import {TopBar}             from './interface/modules/TopBar';
 import {BottomBar}          from './interface/modules/BottomBar';
 import {Settings}           from './interface/modules/Settings';
 import {AudioAnalyser}      from './audio/AudioAnalyser';
-import {DevelopInfo}        from './interface/modules/DevelopInfo';
-import {BarVisualizer}      from './audio/BarVisualizer';
 import {StartScreen}        from './interface/modules/StartScreen';
 import {VisualsRoot}        from './visuals/VisualsRoot';
 
@@ -72,36 +70,9 @@ export class App extends React.PureComponent {
                 water:              0.5,
                 urban:              0.5,
                 structureSize:      0.5,
-            },
-
-            // Dev tools
-            visualsMount:       false
-
-        };
-    }
-
-    // Dev tools, event handler
-    handleDevEvent(event){
-        if(event.target.type === 'range'){
-            if(event.target.name === 'speed'){
-                this.setState({
-                    speed: parseFloat(event.target.value)
-                })
-            }else{
-                this.setState(prevState => {
-                    let visualsParameter = Object.assign({}, prevState.visualsParameter);
-                    visualsParameter[event.target.name] = parseFloat(event.target.value);
-                    return {visualsParameter};
-                })
             }
 
-        }
-
-        if (event.target.name === 'update'){
-            this.setState({
-                visualsMount: !this.state.visualsMount
-            })
-        }
+        };
     }
 
     // Gets called after the last starting dialog
@@ -566,44 +537,9 @@ export class App extends React.PureComponent {
                     eventHandler        = {(event) => this.handleInputEvent(event)}
                     showInterfaceCom    = {this.state.showInterfaceCom}
                 />
-
-
-                <DevelopInfo
-                    eventHandler    = {(event) => this.handleDevEvent(event)}
-                    brightness      = {this.state.visualsParameter.brightness}
-                    hilly           = {this.state.visualsParameter.hilly}
-                    water           = {this.state.visualsParameter.water}
-                    urban           = {this.state.visualsParameter.urban}
-                    structureSize   = {this.state.visualsParameter.structureSize}
-                    visualsMount    = {this.state.visualsParameter.visualsMount}
-                    speed           = {this.state.beat}
-                />
-
-
-
             </div>
 
-
-            {this.state.visualsMount?
-                                <VisualsRoot
-                                    className           = "visualsRoot"
-                                    visualsParameter    = {this.state.visualsParameter}
-                                    projectionMode      = {this.state.projectionMode}
-                                    changeVisuals       = {this.state.changeVisuals}
-                                    stopReload          = {() => this.stopReload()}
-                                    play                = {this.state.play}
-                                    beat                = {this.state.beat}
-                                    avg                 = {this.state.avg}
-                                    config              = {c_visuals_data}
-                                    projectValToInterval= {(oldVal, oldMin, oldMax, newMin, newMax) =>
-                                                          this.projectValToInterval(oldVal, oldMin, oldMax, newMin, newMax)}
-                                />
-                                : ''}
-
-
-
-            {this.state.audio ? <div>
-                                <AudioAnalyser
+            {this.state.audio ? <AudioAnalyser
                                     audio               = {this.state.audio}
                                     sendAudioData       = {(waveData, barData, beat, avg) => this.setAudioData(waveData, barData, beat, avg)}
                                     autoSensitivity     = {this.state.autoSensitivity}
@@ -611,17 +547,9 @@ export class App extends React.PureComponent {
                                     adjustSensitivity   = {(value) => this.adjustMicSensitivity(value)}
                                     configData          = {c_audio_data}
                                 />
-                                <BarVisualizer
-                                    className           = "barVisualiser"
-                                    audioData           = {this.state.barAudioData}
-                                />
-                                </div>
-
                                 : ''
             }
 
-            {/*}
-            For normal use
             {this.state.start ?
                 <VisualsRoot
                     className           = "visualsRoot"
@@ -638,15 +566,10 @@ export class App extends React.PureComponent {
                 />
                 : ''
             }
-            {*/}
-
 
         </div>
-
     );
   }
-
-
 }
 
 

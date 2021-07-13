@@ -57,7 +57,6 @@ p{
 
 #fadeOut *{
     height:     0;
-    display: none;
 }
 
 .visualsRoot{
@@ -67,13 +66,6 @@ p{
     left:       0;
     top:        0;
     z-index:    10;
-}
-
-.barVisualiser{
-    position:   absolute;
-    top:        50px;
-    left:       300px;
-    z-index:    20;
 }
 
 @media (max-width: 600px) {
